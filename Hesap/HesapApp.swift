@@ -11,9 +11,10 @@ import SwiftUI
 struct HesapApp: App {
     var body: some Scene {
         WindowGroup {
-            HesapView()
+            NavigationStack {
+                HesapView()
+            }
         }
     }
 }
-
 
