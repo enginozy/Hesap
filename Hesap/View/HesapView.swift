@@ -10,9 +10,9 @@ import SwiftUI
 struct HesapView: View {
     
     @State var tutar: String = ""
-    @State var vergiler: [String] = [
-        "KDV", "STOPAJ", "TEVKİFAT"
-    ]
+    @State var kdvOran: Bool = true
+    @State var stopajOran: Bool = true
+    @State var tevkifatOran: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -30,22 +30,30 @@ struct HesapView: View {
                                 .background(Color.gray.opacity(0.3))
                                 .cornerRadius(10)
                         }
-                            List{
-                                ForEach(vergiler, id:\.self) { vergi in
-                                    HStack{
-                                        Text(vergi)
-                                        Spacer()
-                                        Text("%20")
-                                    }
-                                    
-                                }
-                            }
-                            .listStyle(.inset)
-                        
+                        GroupBox {
+                            Toggle("KDV (%20)", isOn: $kdvOran)
+                            Toggle("STOPAJ (%15)", isOn: $stopajOran)
+                            Toggle("TEVKİFAT (%30)", isOn: $tevkifatOran)
+                        }
+                        .font(.headline)
+//                            List{
+//                                ForEach(vergiler, id:\.self) { vergi in
+//                                    HStack{
+//                                        Text(vergi)
+//                                            .font(.headline)
+//                                        Spacer()
+//                                        Text("%20")
+//                                    }
+//                                    
+//                                }
+//                            }
+//                            .listStyle(.inset)
+                     Spacer()
                     }
                 }
             }
             .navigationTitle("Fatura".uppercased())
+            .navigationBarTitleDisplayMode(.inline)
             
         }
     }
