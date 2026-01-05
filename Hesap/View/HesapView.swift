@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HesapView: View {
     
+    @State var selectedTab: Int = 0
     @State var tutar: String = ""
     @State var kdvOran: Bool = true
     @State var stopajOran: Bool = true
@@ -16,45 +17,53 @@ struct HesapView: View {
     
     var body: some View {
         NavigationStack {
-            TabView {
-                Tab("Fatura", systemImage: "pencil.line") {
+            TabView(selection: $selectedTab) {
+                Tab("Fatura", systemImage: "pencil.line", value: 0) {
                     VStack{
                         TextField("Tutar", text: $tutar)
                             .textFieldStyle(.roundedBorder)
-                        Button {
-                            
-                        } label: {
-                            Text("Hesapla")
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.gray.opacity(0.3))
-                                .cornerRadius(10)
-                        }
-                        GroupBox {
-                            Toggle("KDV (%20)", isOn: $kdvOran)
-                            Toggle("STOPAJ (%15)", isOn: $stopajOran)
-                            Toggle("TEVKİFAT (%30)", isOn: $tevkifatOran)
-                        }
-                        .font(.headline)
-//                            List{
-//                                ForEach(vergiler, id:\.self) { vergi in
-//                                    HStack{
-//                                        Text(vergi)
-//                                            .font(.headline)
-//                                        Spacer()
-//                                        Text("%20")
-//                                    }
-//                                    
-//                                }
-//                            }
-//                            .listStyle(.inset)
-                     Spacer()
+                        ButtonView()
+                        groupView
+                        
+                        Spacer()
                     }
                 }
             }
             .navigationTitle("Fatura".uppercased())
             .navigationBarTitleDisplayMode(.inline)
+        }
+    }
+    
+    // var extracted codes
+    
+    var groupView: some View {
+        GroupBox {
+            Toggle("KDV (%20)", isOn: $kdvOran)
+            Toggle("STOPAJ (%15)", isOn: $stopajOran)
+                .tint(Color.red)
+            HStack {
+                Toggle("TEVKİFAT (%30)", isOn: $tevkifatOran)
+                    .toggleStyle(.button)
+                Spacer()
+                Text(tevkifatOran ? "VAR" : "YOK" )
+            }
+        }
+        .font(.headline)
+    }
+}
+
+// subView extract codes
+
+struct ButtonView : View {
+    var body: some View {
+        Button {
             
+        } label: {
+            Text("Hesapla")
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(Color.gray.opacity(0.3))
+                .cornerRadius(10)
         }
     }
 }
